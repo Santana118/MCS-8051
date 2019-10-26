@@ -1,0 +1,57 @@
+      org   0100h
+START: 
+;Copy data ke Port 0
+;1 = lampu mati, 0 = Lampu nyala
+;Urutan bit = P0.7 P0.6 ... P0.0
+		MOV P0, #11111111b
+		ACALL WAIT
+		MOV P0, #11111110b
+		ACALL WAIT
+		MOV P0, #11111101b
+		ACALL WAIT
+		MOV P0, #11111100b
+		ACALL WAIT
+		MOV P0, #11111011b
+		ACALL WAIT
+		MOV P0, #11111010b
+		ACALL WAIT
+		MOV P0, #11111001b
+		ACALL WAIT
+		MOV P0, #11111000b
+		ACALL WAIT
+		MOV P0, #11110111b
+		ACALL WAIT
+		MOV P0, #11110110b
+		ACALL WAIT
+		MOV P0, #11110101b
+		ACALL WAIT
+		MOV P0, #11110100b
+		ACALL WAIT
+		MOV P0, #11110011b
+		ACALL WAIT
+		MOV P0, #11110010b
+		ACALL WAIT
+		MOV P0, #11110001b
+		ACALL WAIT
+		MOV P0, #11110000b
+		ACALL WAIT
+		MOV P0, #11110000b
+		ACALL WAIT
+		MOV P0, #11110000b
+		ACALL WAIT
+		MOV P0, #11110000b
+		ACALL WAIT
+		MOV P0, #11110000b
+		ACALL WAIT
+		JMP START
+
+		
+;Stack iterasi delay, krn hanya limit sampai 255 desimal
+;Perlu lebih dari itu agar bisa terasa delaynya
+WAIT:  MOV R4,#255D
+SKIP_1: MOV R5, #150D
+		
+SKIP_2:NOP
+       DJNZ R5, SKIP_2
+	   DJNZ R4, SKIP_1
+       RET	  

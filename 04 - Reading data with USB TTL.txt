@@ -1,0 +1,41 @@
+$NOMOD51
+$INCLUDE (8051.MCU)
+
+;====================================================================
+; RESET and INTERRUPT VECTORS
+;====================================================================
+
+      ; Reset Vector
+      org   0000h
+      jmp   Start
+
+;====================================================================
+; CODE SEGMENT
+;====================================================================
+
+      org   0100h
+Start:	
+	  MOV SCON, #01000010B
+	  MOV TMOD, #00100000B
+	  MOV TH1, #-3
+	  SETB TR1
+	  MOV A, #11111111B
+
+Loop:
+DECREMENT:
+	  CLR TI
+	  MOV SBUF, A
+	  JNB TI, $
+	  DEC A
+	  CJNE A, #0B, DECREMENT
+	  MOV A, #00000000B
+INCREMENT :
+	  CLR TI
+	  MOV SBUF, A
+	  JNB TI, $
+	  INC A
+	  CJNE A, #11111111B, INCREMENT
+	  JMP LOOP
+
+;====================================================================
+      END

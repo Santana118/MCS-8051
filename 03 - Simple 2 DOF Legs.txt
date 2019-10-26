@@ -1,0 +1,253 @@
+$NOMOD51
+$INCLUDE (8051.MCU)
+
+;====================================================================
+; DEFINITIONS
+;====================================================================
+
+;====================================================================
+; VARIABLES
+;====================================================================
+
+;====================================================================
+; RESET and INTERRUPT VECTORS
+;====================================================================
+
+      ; Reset Vector
+     org   0000h
+      jmp   start
+
+;====================================================================
+; CODE SEGMENT
+;====================================================================
+     org 00h
+start:
+
+MOV TMOD,#00000001B
+MULAI:
+ACALL RESET_CYCLE
+DEFAULT: 
+	  DEC A
+	  CLR P1.0
+	  CLR P1.1
+	  CLR P1.2
+	  CLR P1.3
+      ACALL PWM_LOW_0
+      ACALL PWM_HIGH_0
+	  JZ NEXT
+      SJMP DEFAULT
+	  
+NEXT:
+	  ACALL RESET_CYCLE
+KANAN_DEPAN_1 :
+	  DEC A
+	  SETB P1.1
+      ACALL PWM_LOW_N45
+	  CLR P1.1
+      ACALL PWM_HIGH_N45
+	  JZ NEXT_1
+      SJMP KANAN_DEPAN_1	
+NEXT_1:
+	ACALL RESET_CYCLE
+KANAN_DEPAN_2:
+	  DEC A
+	  SETB P1.0
+      ACALL PWM_LOW_0
+	  CLR P1.0
+      ACALL PWM_HIGH_0
+	  JZ NEXT_3
+      SJMP KANAN_DEPAN_2	
+NEXT_3:
+	ACALL RESET_CYCLE
+KANAN_DEPAN_3:
+	  DEC A
+	  SETB P1.1
+      ACALL PWM_LOW_45
+	  CLR P1.1
+      ACALL PWM_HIGH_45
+	  JZ NEXT_4
+      SJMP KANAN_DEPAN_3
+	  
+;==========================================
+NEXT_4:
+	  ACALL RESET_CYCLE
+KANAN_BELAKANG_1 :
+	  DEC A
+	  SETB P1.3
+      ACALL PWM_LOW_N45
+	  CLR P1.3
+      ACALL PWM_HIGH_N45
+	  JZ NEXT_5
+      SJMP KANAN_BELAKANG_1	
+NEXT_5:
+	ACALL RESET_CYCLE
+KANAN_BELAKANG_2:
+	  DEC A
+	  SETB P1.2
+      ACALL PWM_LOW_0
+	  CLR P1.2
+      ACALL PWM_HIGH_0
+	  JZ NEXT_6
+      SJMP KANAN_BELAKANG_2	
+NEXT_6:
+	ACALL RESET_CYCLE
+KANAN_BELAKANG_3:
+	  DEC A
+	  SETB P1.3
+      ACALL PWM_LOW_45
+	  CLR P1.3
+      ACALL PWM_HIGH_45
+	  JZ NEXT_7
+      SJMP KANAN_BELAKANG_3
+;==================================
+NEXT_7:
+	  ACALL RESET_CYCLE
+KIRI_DEPAN_1 :
+	  DEC A
+	  SETB P1.5
+      ACALL PWM_LOW_N45
+	  CLR P1.5
+      ACALL PWM_HIGH_N45
+	  JZ NEXT_8
+      SJMP KIRI_DEPAN_1	
+NEXT_8:
+	ACALL RESET_CYCLE
+KIRI_DEPAN_2:
+	  DEC A
+	  SETB P1.4
+      ACALL PWM_LOW_0
+	  CLR P1.4
+      ACALL PWM_HIGH_0
+	  JZ NEXT_9
+      SJMP KIRI_DEPAN_2
+NEXT_9:
+	ACALL RESET_CYCLE
+KIRI_DEPAN_3:
+	  DEC A
+	  SETB P1.5
+      ACALL PWM_LOW_45
+	  CLR P1.5
+      ACALL PWM_HIGH_45
+	  JZ NEXT_10
+      SJMP KIRI_DEPAN_3
+;=========================================
+NEXT_10:
+	  ACALL RESET_CYCLE
+KIRI_BELAKANG_1 :
+	  DEC A
+	  SETB P1.5
+      ACALL PWM_LOW_N45
+	  CLR P1.5
+      ACALL PWM_HIGH_N45
+	  JZ NEXT_11
+      SJMP KIRI_BELAKANG_1	
+NEXT_11:
+	ACALL RESET_CYCLE
+KIRI_BELAKANG_2:
+	  DEC A
+	  SETB P1.4
+      ACALL PWM_LOW_0
+	  CLR P1.4
+      ACALL PWM_HIGH_0
+	  JZ NEXT_12
+      SJMP KIRI_BELAKANG_2
+NEXT_12:
+	ACALL RESET_CYCLE
+KIRI_BELAKANG_3:
+	  DEC A
+	  SETB P1.5
+      ACALL PWM_LOW_45
+	  CLR P1.5
+      ACALL PWM_HIGH_45
+	  JZ LAST
+      SJMP KIRI_BELAKANG_3
+;=========================================	  
+LAST:
+	  ACALL RESET_CYCLE
+FINAL:
+	  DEC A
+	  SETB P1.0
+      ACALL PWM_LOW_N45
+	  CLR P1.0
+      ACALL PWM_HIGH_N45
+	  JZ MULAI
+      SJMP FINAL
+	  
+RESET_CYCLE:
+MOV A, #0BBH
+RET
+
+PWM_LOW_45: 
+MOV TH0, #HIGH(-1700)
+MOV TL0, #LOW(-1700)
+SETB TR0
+JNB TF0,$
+CLR TR0
+CLR TF0
+RET
+
+PWM_HIGH_45: 
+MOV TH0, #HIGH(-18300)
+MOV TL0, #LOW(-18300)
+SETB TR0
+JNB TF0,$
+CLR TR0
+CLR TF0
+RET
+
+PWM_LOW_0: 
+MOV TH0, #HIGH(-500)
+MOV TL0, #LOW(-500)
+SETB TR0
+JNB TF0,$
+CLR TR0
+CLR TF0
+RET
+
+PWM_HIGH_0: 
+MOV TH0, #HIGH(-19400)
+MOV TL0, #LOW(-19400)
+SETB TR0
+JNB TF0,$
+CLR TR0
+CLR TF0
+RET
+
+PWM_LOW_90:
+MOV TH0, #HIGH(-2200)
+MOV TL0, #LOW(-2200)
+SETB TR0
+JNB TF0,$
+CLR TR0
+CLR TF0
+RET
+
+PWM_HIGH_90:
+MOV TH0, #HIGH(-16000)
+MOV TL0, #LOW(-16000)
+SETB TR0
+JNB TF0,$
+CLR TR0
+CLR TF0
+RET
+
+PWM_LOW_N45:
+MOV TH0, #HIGH(-2250)
+MOV TL0, #LOW(-2250)
+SETB TR0
+JNB TF0,$
+CLR TR0
+CLR TF0
+RET
+
+PWM_HIGH_N45:
+MOV TH0, #HIGH(-16000)
+MOV TL0, #LOW(-16000)
+SETB TR0
+JNB TF0,$
+CLR TR0
+CLR TF0
+RET
+
+
+END
