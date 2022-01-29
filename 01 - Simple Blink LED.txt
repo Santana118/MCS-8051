@@ -1,4 +1,9 @@
-      org   0100h
+;SIMPLE BLINK LED
+;This source file intended to test output port using led blink.
+;Blink duration will feel short and may be unnoticeble with bare eyes in lightroom, so additional loop is needed.
+;Schematic and Flowchart will included later
+      
+    		org   0100h
 START: 
 ;Copy data ke Port 0
 ;1 = lampu mati, 0 = Lampu nyala
