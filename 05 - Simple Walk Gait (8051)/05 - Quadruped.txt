@@ -1,0 +1,247 @@
+$NOMOD51
+$INCLUDE (8051.MCU) 
+;====================================================================
+; Reset Vector
+                                 org   0000h
+                                 jmp   start
+;====================================================================
+; CODE SEGMENT
+;====================================================================
+                                 org 00h
+
+START:
+		MOV P1, #00000000B
+		MOV TMOD,#00010001B		
+STEP:
+		MOV A, #0C8H
+MULAI:
+		DEC A
+		MOV TL0, #LOW(-940)
+		MOV TH0, #HIGH(-940)
+		MOV TL1, #LOW(-1950)
+		MOV TH1, #HIGH(-1950)
+		MOV P1.1, #01010101B
+		SETB TR0
+		SETB TR1
+		JNB TF0, $
+		CLR P1.0
+		CLR P1.4
+		JNB TF1, $
+		CLR P1.2
+		CLR P1.6
+		CLR TR0
+		CLR TF0
+		CLR TR1
+		CLR TF1
+		MOV TL0, #LOW(-19000)
+		MOV TH0, #HIGH(-19000)
+		SETB TR0
+		JNB TF0, $
+		CLR TR0
+		CLR TF0
+		JNZ MULAI
+		ACALL RESET_CYCLE
+	
+MULAI_KAKI:
+		DEC A
+		MOV TL0, #LOW(-1500)
+		MOV TH0, #HIGH(-1500)
+		SETB P1.1
+		SETB P1.3
+		SETB P1.5
+		SETB P1.7
+		SETB TR0
+		JNB TF0, $
+		CLR TR0
+		CLR TF0
+		MOV TL0, #LOW(-19100)
+		MOV TH0, #HIGH(-19100)
+		CLR P1.1
+		CLR P1.3
+		CLR P1.5
+		CLR P1.7
+		SETB TR0
+		JNB TF0, $
+		CLR TR0
+		CLR TF0
+		JNZ MULAI_KAKI
+		ACALL RESET_CYCLE	
+
+STEP_1:
+		DEC A
+		MOV TL0, #LOW(-1200)
+		MOV TH0, #HIGH(-1200)
+		MOV TL1, #LOW(-1500)
+		MOV TH1, #HIGH(-1500)
+                             MOV P1.1, #00000011B
+		SETB TR0
+		SETB TR1
+		JNB TF0, $
+		CLR P1.1
+		JNB TF1, $
+		CLR P1.0
+		CLR TR0
+		CLR TR1
+		CLR TF0
+		CLR TF1
+		MOV TL0, #LOW(-19100)
+		MOV TH0, #HIGH(-19100)
+		SETB TR0
+		JNB TF0, $
+		CLR TR0
+		CLR TF0
+		JNZ STEP_1
+		ACALL RESET_CYCLE	
+		
+STEP_2:
+		ACALL SET_KAKI
+STEP_3:
+		DEC A
+		MOV TL0, #LOW(-1200)
+		MOV TH0, #HIGH(-1200)
+		MOV TL1, #LOW(-1500)
+		MOV TH1, #HIGH(-1500)
+                             MOV P1.1, #11000000B
+		SETB TR0
+		SETB TR1
+		JNB TF0, $
+		CLR P1.7
+		JNB TF1, $
+		CLR P1.6
+		CLR TR0
+		CLR TR1
+		CLR TF0
+		CLR TF1
+		MOV TL0, #LOW(-19100)
+		MOV TH0, #HIGH(-19100)
+		SETB TR0
+		JNB TF0, $
+		CLR TR0
+		CLR TF0
+		JNZ STEP_3
+		ACALL RESET_CYCLE	
+		
+STEP_4:
+		ACALL SET_KAKI	
+		
+STEP_5:
+ ;move forward
+		DEC A
+		MOV TL0, #LOW(-940)
+		MOV TH0, #HIGH(-940)
+		MOV TL1, #LOW(-1950)
+		MOV TH1, #HIGH(-1950)
+                             MOV P1.1 #01010101B
+		SETB TR0
+		SETB TR1
+		JNB TF0, $
+		CLR P1.0
+		CLR TF0
+		CLR TR0
+		MOV TL0, #LOW(-560)
+		MOV TH0, #HIGH(-560)
+		SETB TR0
+		JNB TF0, $
+		CLR P1.2
+		CLR P1.4
+		
+		JNB TF1, $
+		CLR P1.6
+		CLR TR0
+		CLR TR1
+		CLR TF0
+		CLR TF1
+		MOV TL0, #LOW(-19100)
+		MOV TH0, #HIGH(-19100)
+		SETB TR0
+		JNB TF0, $
+		CLR TR0
+		CLR TF0
+		JNZ STEP_5
+		ACALL RESET_CYCLE	
+		
+STEP_6:
+		ACALL SET_KAKI	
+		
+STEP_7:
+		DEC A
+		MOV TL0, #LOW(-1200)
+		MOV TH0, #HIGH(-1200)
+		MOV TL1, #LOW(-1950)
+		MOV TH1, #HIGH(-1950)
+                             MOV P1.1, #00001100B
+		SETB TR0
+		SETB TR1
+		JNB TF0, $
+		CLR P1.3
+		JNB TF1, $
+		CLR P1.2
+		CLR TR0
+		CLR TR1
+		CLR TF0
+		CLR TF1
+		MOV TL0, #LOW(-19100)
+		MOV TH0, #HIGH(-19100)
+		SETB TR0
+		JNB TF0, $
+		CLR TR0
+		CLR TF0
+		JNZ STEP_7
+		ACALL RESET_CYCLE	
+		
+STEP_8:
+		ACALL SET_KAKI	
+		
+STEP_9:
+		DEC A
+		MOV TL0, #LOW(-940)
+		MOV TH0, #HIGH(-940)
+		MOV TL1, #LOW(-1200)
+		MOV TH1, #HIGH(-1200)
+                             MOV P1.1, #00110000B
+		SETB TR0
+		SETB TR1
+		JNB TF0, $
+		CLR P1.4
+		JNB TF1, $
+		CLR P1.5
+		CLR TR0
+		CLR TR1
+		CLR TF0
+		CLR TF1
+		MOV TL0, #LOW(-19100)
+		MOV TH0, #HIGH(-19100)
+		SETB TR0
+		JNB TF0, $
+		CLR TR0
+		CLR TF0
+		JNZ STEP_9
+		ACALL RESET_CYCLE				
+		JMP MULAI_KAKI
+;================================================		
+;SUBROUTINE
+RESET_CYCLE :
+                                ;PARAMETER BANYAKNYA PULSA PWM DIKALI LOOP ITERASI
+		MOV A, #05H
+		RET
+SET_KAKI 
+		DEC A
+		MOV TL0, #LOW(-1500)
+		MOV TH0, #HIGH(-1500)
+                                MOV P1.1, #10101010B
+		SETB TR0
+		JNB TF0, $
+		CLR TR0
+		CLR TF0
+		MOV TL0, #LOW(-19100)
+		MOV TH0, #HIGH(-19100)
+                                MOV P1.1, #00000000B      
+		SETB TR0
+		JNB TF0, $
+		CLR TR0
+		CLR TF0
+		JNZ SET_KAKI
+		ACALL RESET_CYCLE
+                            RET
+
+END
